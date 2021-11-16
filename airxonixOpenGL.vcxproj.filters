@@ -24,6 +24,12 @@
     <ClCompile Include="glutHelper.h">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="field.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">

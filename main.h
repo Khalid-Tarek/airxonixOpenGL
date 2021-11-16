@@ -1,13 +1,10 @@
 #include "glutHelper.h"
-#ifndef INCLUDE_GLUT
-#include <GL\glut.h>
-#endif
 
 //Window Properties
 #define WINDOW_WIDTH		1024
 #define WINDOW_HEIGHT		1024
 #define FOV					60
-#define BACKGROUND_COLOR	0, 0.2, 0.6, 1
+#define BACKGROUND_COLOR	0, 0.3, 0.3, 1
 
 //Game States
 #define PLAYING				10

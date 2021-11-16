@@ -1,14 +1,27 @@
-#ifndef GLUT_HELPER_CPP
-#define GLUT_HELPER_CPP
+#ifndef GLUT_HELPER_H
+#define GLUT_HELPER_H
+
+#include "field.cpp"
+#include "entity.cpp"
 
 #ifndef INCLUDE_GLUT
 #define INCLUDE_GLUT
 #include <GL\glut.h>
 #endif
 
+#define CELL_SIZE 0.1
+
 /**
  *	Renders 3 simple lines signifying the 3 positive axis. Only used for debugging purposes
  */
 void renderCoordinateSystem();
+
+void renderCell(Field::Cell cell, double color[3]);
+
+void renderField(Field f);
+
+void renderPlayer(Entity player);
+
+void renderEnemies(vector<Entity> enemies);
 
 #endif

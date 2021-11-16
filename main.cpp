@@ -1,12 +1,18 @@
 #include "main.h"
 
-
 //Current Game State
 int gameState = PLAYING;
 
 //The angles of view of the scene
-double sceneRotateX = 35;
-double sceneRotateY = 25;
+double sceneRotateX = 30;
+double sceneRotateY = 0;
+
+
+Field level;
+/*
+Entity player;
+vector<Entity> enemies;
+*/
 
 //Periodically Checks for change in the gameState variable
 void checkGameState(){
@@ -18,11 +24,20 @@ void display(){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
-	glTranslated( 0, 0, -10);
+	glTranslated(-5, 0, -20);
 	glRotated(sceneRotateX, 1, 0, 0);
 	glRotated(sceneRotateY, 0, 1, 0);
 
-	renderCoordinateSystem();
+	//renderCoordinateSystem();
+
+	
+	renderField(level);
+	/*
+	renderPlayer(player);
+
+	renderEnemies(enemies);
+	*/
+	
 
 	glutSwapBuffers();
 }
@@ -80,6 +95,8 @@ void timer(int x){
 }
 
 int main(int argc, char* argv[]) {
+
+	level = Field(100);
 
 	//GLUT initialization
 	glutInit(&argc, argv);

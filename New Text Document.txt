@@ -1,0 +1,21 @@
+* Grid thats getting filled
+	* either filled
+	* or not
+
+* 4 Types of enemies
+	* 2 subtypes
+		* moves on filled
+			*if it meets player, you lose a life
+		* moves on empty
+			* non destructive
+			* destructive
+			* drills in filled or unfilled
+
+* Pickups
+	* more time
+	* decrease everyone's speed
+	* decrease enemies' speed only
+	* increase player's speed
+	* extra life
+	//* inverted movement (debuff)
+	* a random pickup, any of the above

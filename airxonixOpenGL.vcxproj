@@ -60,9 +60,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="field.cpp" />
     <ClCompile Include="glutHelper.cpp" />
     <ClCompile Include="glutHelper.h" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="entity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h" />
