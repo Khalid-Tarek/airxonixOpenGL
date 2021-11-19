@@ -1,32 +1,57 @@
 #ifndef ENTITY_CPP
 #define ENTITY_CPP
 
-#include <vector>
+#define REGULAR_ENEMY	'R'
+#define FILLED_ENEMY	'F'
+#define PLAYER			'P'
 
-#define SPEED_SLOW		0.5
-#define SPEED_NORMAL	1.0
-#define SPEED_FAST		2.0
-
-using namespace std;
-
-/**
- * Types of Enemies:
- *		* Y: 
- */
 class Entity{
-	vector<double> color;
-	vector<int> position;
+public:
+	int position[2];
 	char type;
-	int speed;
-	int movementDirection[2];
-
-	//player only attributes
-	int lives;
-
-	//enemy only attributes
-	int power;
+	double color[3];
+	int directions[2];
 
 	Entity() {};
+	Entity(int position[2], char type) {
+		this->position[0] = position[0];
+		this->position[1] = position[1];
+		this->type = type;
+		switch(type){
+		case REGULAR_ENEMY:
+			break;
+		case FILLED_ENEMY:
+			break;
+		case PLAYER:
+			break;
+		}
+		this->directions[0] = 1;
+		this->directions[1] = 1;
+	}
+	Entity(int position[2], char type, int directions[2]) {
+		Entity(position, type);
+		this->directions[0] = directions[0];
+		this->directions[1] = directions[1];
+	}
+
+	void moveRight(){
+		
+	}
+};
+
+class Enemy: Entity {
+public:
+	int power;
+
+	Enemy() {};
+
+};
+
+class Player: Entity {
+public:
+	int lives;
+
+	Player() {};
 };
 
 #endif
