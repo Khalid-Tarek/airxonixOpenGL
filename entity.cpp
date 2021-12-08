@@ -69,15 +69,15 @@ public:
 
 };
 
-class Player: Entity {
+class Player: public Entity {
 public:
 	int lives;
 
 	Player() {};
-	Player(char type, int position[2]): Entity(type, position){
+	Player(int position[2]): Entity(PLAYER, position){
 		this->lives = 3;
 	}
-	Player(char type, int position[2], int directions[2]): Entity(type, position, directions){
+	Player(int position[2], int directions[2]): Entity(PLAYER, position, directions){
 		this->lives = 3;
 	}
 };

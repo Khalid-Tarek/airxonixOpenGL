@@ -1,5 +1,16 @@
 #include "glutHelper.h"
 
+void addLighting(){
+	glPushMatrix();
+	glRotated(180, 0, 1, 0);
+	GLfloat lightColor[] = {0.3, 0.3, 0.3, 1};
+
+	GLfloat lightPosition0[] = {0, 2, 0, 1};
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);
+	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition0);
+	glPopMatrix();
+}
+
 /**
  *	Renders 3 simple lines signifying the 3 positive axis. Only used for debugging purposes
  */
@@ -64,7 +75,7 @@ void renderCell(Field::Cell cell, double raisedColor[3]) {
 		}
 	glEnd();
 
-	
+	/*
 	//render an outline line loop around the cuboid to distinguish faces (MIGHT REMOVE THIS IF WE IMPLEMENT SHADOWS)
 	glColor4d(0, 0, 0, 1);			//Set the current rendering color to black
 	glLineWidth(1.5);				//Set the line width to: 1.5
@@ -75,7 +86,7 @@ void renderCell(Field::Cell cell, double raisedColor[3]) {
 			}
 		glEnd();
 	}
-	
+	*/
 }
 
 void renderField(Field field){
@@ -85,7 +96,9 @@ void renderField(Field field){
 }
 
 void renderPlayer(Player player){
-	
+	glTranslated(player.position[0] / 10, CELL_SIZE * 9, player.position[1] / 10);
+	glColor3dv(player.color);
+	glutSolidSphere(CELL_SIZE * 3, 20, 20);
 }
 
 void renderEnemies(vector<Enemy> enemies){

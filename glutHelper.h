@@ -11,6 +11,8 @@
 
 #define CELL_SIZE 0.1
 
+void addLighting();
+
 /**
  *	Renders 3 simple lines signifying the 3 positive axis. Only used for debugging purposes
  */

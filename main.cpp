@@ -9,6 +9,7 @@ double sceneRotateY = 0;
 
 Field level;
 Player player;
+vector<Enemy> *enemies;
 
 //Periodically Checks for change in the gameState variable
 void checkGameState(){
@@ -20,18 +21,19 @@ void display(){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
-	glTranslated(-5, 0, -25);
+	glTranslated(-5, 0, -20);
 	glRotated(sceneRotateX, 1, 0, 0);
 	glRotated(sceneRotateY, 0, 1, 0);
+
+	addLighting();
 
 	renderCoordinateSystem();
 
 	renderField(level);
-	/*
+
 	renderPlayer(player);
 
-	renderEnemies(enemies);
-	*/
+	renderEnemies(*enemies);
 	
 	glutSwapBuffers();
 }
@@ -68,10 +70,10 @@ void keyboard(unsigned char key, int x, int y) {
 	if(gameState != PLAYING) return;
 	switch(key){
 	case 'w':
-		
+
 		break;
 	case 's':
-		
+
 		break;
 	case 'a':
 		
@@ -90,6 +92,11 @@ void timer(int x){
 int main(int argc, char* argv[]) {
 
 	level = Field(1);
+
+	int position[2] = {50, 50};
+	player = Player(position);
+
+	enemies = &level.enemies;
 
 	//GLUT initialization
 	glutInit(&argc, argv);
@@ -117,6 +124,14 @@ int main(int argc, char* argv[]) {
 
 	//Depth and Multisampling Setup
 	glEnable(GL_DEPTH_TEST);
+
+	//Lighting and Shadows
+	glEnable(GL_COLOR_MATERIAL);
+	glEnable(GL_LIGHTING);			//Enables Lighting: Use current lighting parameters to compute color
+	glEnable(GL_LIGHT0);			//Enables Light0
+	glEnable(GL_LIGHT1);			//Enables Light1
+	glEnable(GL_NORMALIZE);			//Normalizes color vectors to a unit length before lighting
+	glShadeModel(GL_SMOOTH);
 
 	//glutFullScreen();
 	glutMainLoop();
