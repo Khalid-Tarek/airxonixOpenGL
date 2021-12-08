@@ -27,15 +27,15 @@ void renderCoordinateSystem(){
  *	Similar to the (renderCuboid function we used in bloxrozOpenGL) 
  *	Only difference here is the center position is not the absolute center, but bottom face's center
  */
-void renderCell(Field::Cell cell, double color[3]) {
+void renderCell(Field::Cell cell, double raisedColor[3]) {
 	//Get the 3D coordinate of the center of the block
-	double x = cell.x;
+	double x = cell.x * CELL_SIZE;
 	double y = 0;
-	double z = cell.z;
+	double z = cell.z * CELL_SIZE;
 	
-	double hL = CELL_SIZE / 2;			//half Length
-	double h = cell.raised? 0.5 : 0.1;	//Height
-	double hB = CELL_SIZE / 2;			//half Breadth
+	double hL = CELL_SIZE / 2;									//half Length
+	double h = (cell.raised * CELL_SIZE * 3) + CELL_SIZE;		//Height
+	double hB = CELL_SIZE / 2;									//half Breadth
 
 	//Create an array of all the faces, each face represented by 4 points, and each point having 3 coordinates xyz
 	//All faces go from top left -> top right -> bottom right -> bottom left (To make the front of the face on the outside of the cuboid)
@@ -48,6 +48,11 @@ void renderCell(Field::Cell cell, double color[3]) {
 		{{x - hL, y, z + hB}, {x + hL, y, z + hB}, {x + hL, y, z - hB}, {x - hL, y, z - hB}},					//bottom
 	};
 
+	double color[3];
+	color[0] = 1 - (cell.raised * (1 - raisedColor[0]));
+	color[1] = 1 - (cell.raised * (1 - raisedColor[1]));
+	color[2] = 1 - (cell.raised * (1 - raisedColor[2]));
+
 	//render the cuboid
 	glColor3dv(color);				//Set the current rendering color to the block's color
 	glLineWidth(1);					//Set the line width to the default: 1
@@ -59,6 +64,7 @@ void renderCell(Field::Cell cell, double color[3]) {
 		}
 	glEnd();
 
+	
 	//render an outline line loop around the cuboid to distinguish faces (MIGHT REMOVE THIS IF WE IMPLEMENT SHADOWS)
 	glColor4d(0, 0, 0, 1);			//Set the current rendering color to black
 	glLineWidth(1.5);				//Set the line width to: 1.5
@@ -69,9 +75,19 @@ void renderCell(Field::Cell cell, double color[3]) {
 			}
 		glEnd();
 	}
+	
 }
 
-void renderField(Field f){
+void renderField(Field field){
+	for(int i = 0; i < field.dimension; i++)
+		for(int j = 0; j < field.dimension; j++)
+			renderCell(field.board[i][j], field.raisedColors);
+}
+
+void renderPlayer(Player player){
 	
-	glColor3d(1, 1, 1);
+}
+
+void renderEnemies(vector<Enemy> enemies){
+	
 }

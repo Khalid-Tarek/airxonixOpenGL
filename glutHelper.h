@@ -18,10 +18,10 @@ void renderCoordinateSystem();
 
 void renderCell(Field::Cell cell, double color[3]);
 
-void renderField(Field f);
+void renderField(Field field);
 
-void renderPlayer(Entity player);
+void renderPlayer(Player player);
 
-void renderEnemies(vector<Entity> enemies);
+void renderEnemies(vector<Enemy> enemies);
 
 #endif

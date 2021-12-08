@@ -10,6 +10,16 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="entity.cpp" />
+    <ClCompile Include="field.cpp" />
+    <ClCompile Include="glutHelper.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="glutHelper.h" />
+    <ClInclude Include="main.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A5A21B1A-8650-47FB-B95B-1DEFD61CC8D2}</ProjectGuid>
     <RootNamespace>airxonixOpenGL</RootNamespace>
@@ -59,16 +69,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="field.cpp" />
-    <ClCompile Include="glutHelper.cpp" />
-    <ClCompile Include="glutHelper.h" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="entity.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="main.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
