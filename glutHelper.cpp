@@ -96,11 +96,21 @@ void renderField(Field field){
 }
 
 void renderPlayer(Player player){
-	glTranslated(player.position[0] / 10, CELL_SIZE * 9, player.position[1] / 10);
+	glPushMatrix();
+
+	glTranslated(player.position[0] / 10, CELL_SIZE * 7.5, player.position[1] / 10);
 	glColor3dv(player.color);
 	glutSolidSphere(CELL_SIZE * 3, 20, 20);
+
+	glPopMatrix();
 }
 
 void renderEnemies(vector<Enemy> enemies){
-	
+	for(int i = 0; i < enemies.size(); i++){
+		glPushMatrix();
+		glTranslated(enemies[i].position[0] / 10, CELL_SIZE * 5, enemies[i].position[1] / 10);
+		glColor3dv(enemies[i].color);
+		glutSolidCube(CELL_SIZE * 4);
+		glPopMatrix();
+	}
 }

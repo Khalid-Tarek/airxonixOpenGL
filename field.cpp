@@ -76,8 +76,11 @@ public:
 		cin >> winCondition;
 		updateCurrentlyFilled();
 
+		cin >> timeLeft;
+
 		int numOfEnemies;
 		cin >> numOfEnemies;
+
 		for(int i = 0; i < numOfEnemies; i++){
 			char enemyType;
 			int position[2];

@@ -9,7 +9,7 @@ double sceneRotateY = 0;
 
 Field level;
 Player player;
-vector<Enemy> *enemies;
+vector<Enemy> enemies;
 
 //Periodically Checks for change in the gameState variable
 void checkGameState(){
@@ -33,7 +33,7 @@ void display(){
 
 	renderPlayer(player);
 
-	renderEnemies(*enemies);
+	renderEnemies(enemies);
 	
 	glutSwapBuffers();
 }
@@ -93,10 +93,13 @@ int main(int argc, char* argv[]) {
 
 	level = Field(1);
 
-	int position[2] = {50, 50};
+	int position[2] = {0, 0};
 	player = Player(position);
 
-	enemies = &level.enemies;
+	enemies = level.enemies;
+
+	for(int i = 0; i < enemies.size(); i++)
+		cout << enemies[i].position[0] << " "  << enemies[i].position[1] << endl;
 
 	//GLUT initialization
 	glutInit(&argc, argv);

@@ -20,13 +20,13 @@ public:
 		switch(type){
 		case REGULAR_ENEMY: //Red
 			this->color[0] = 1;
-			this->color[1] = 1;
+			this->color[1] = 0;
 			this->color[2] = 0;
 			break;
 		case FILLED_ENEMY:	//Blue
-			this->color[0] = 1;
-			this->color[1] = 1;
-			this->color[2] = 0;
+			this->color[0] = 0;
+			this->color[1] = 0;
+			this->color[2] = 1;
 			break;
 		case PLAYER:		//Yellow
 			this->color[0] = 1;
@@ -49,7 +49,7 @@ public:
 	}
 };
 
-class Enemy: Entity {
+class Enemy: public Entity {
 public:
 	int power;
 
