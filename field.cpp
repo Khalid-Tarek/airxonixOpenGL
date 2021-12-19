@@ -1,9 +1,6 @@
 #ifndef FIELD_CPP
 #define FIELD_CPP
 
-#include <iostream>
-#include <stdio.h>
-#include <string>
 #include <vector>
 #include <math.h>
 
@@ -12,8 +9,6 @@
 #define NO_ENTITY	'N'
 #define CHECKED		'C'
 
-using namespace std;
-
 class Field{
 public:
 	class Cell {
@@ -21,7 +16,7 @@ public:
 		int x;
 		int z;
 		double raised;		//0 - 1 ------ 0 being totally unraised, 1 being totally raised
-		char cellFlag;	//Entity::type
+		char cellFlag;		//Entity::type
 
 		Cell() {};
 		Cell(int x, int z, double raised) {
@@ -97,6 +92,13 @@ public:
 		if(y < dimension - 1)	fill(x, y + 1, isEmpty(x, y + 1));
 	}
 
+	void move(Entity &entity){
+		if(entity.type != PLAYER) collisionHandler(entity);
+		board[entity.position[0]][entity.position[1]].cellFlag = NO_ENTITY;
+		entity.move(dimension);
+		board[entity.position[0]][entity.position[1]].cellFlag = NO_ENTITY;
+	}
+
 private:
 	void updateCurrentlyFilled(){
 		double totalNumOfCells = dimension * dimension;
@@ -112,9 +114,21 @@ private:
 	bool isEmpty(int x, int y){
 		if(board[x][y].cellFlag == CHECKED)			return true;
 		if(board[x][y].raised == 1)					return true;
-		if(board[x][y].cellFlag == REGULAR_ENEMY)	return false;
+		if(board[x][y].cellFlag == REGULAR_ENEMY)	{
+			removeChecked(x, y);
+			return false;
+		}
 		board[x][y].cellFlag = CHECKED;
-		return isEmpty(x - 1, y) && isEmpty(x + 1, y) && (x, y - 1) && isEmpty(x, y + 1);
+		return isEmpty(x - 1, y) && isEmpty(x + 1, y) && isEmpty(x, y - 1) && isEmpty(x, y + 1);
+	}
+
+	void removeChecked(int x, int y){
+		if(board[x][y].cellFlag != CHECKED) return;
+		board[x][y].cellFlag = NO_ENTITY;
+		removeChecked(x - 1, y);
+		removeChecked(x + 1, y);
+		removeChecked(x, y - 1);
+		removeChecked(x, y + 1);
 	}
 
 	void fill(int x, int y, bool isEmptyFlag){
@@ -125,6 +139,15 @@ private:
 		fill(x + 1, y, isEmptyFlag);
 		fill(x, y - 1, isEmptyFlag);
 		fill(x, y + 1, isEmptyFlag);
+	}
+
+	void collisionHandler(Entity &entity){
+		//If the type of entity is regular, then it will collide against filled, if its filled, it will collide against empty
+		int collisionAgainst = (entity.type == REGULAR_ENEMY? 1 : 0);
+		if(board[entity.position[0] + 2 * entity.directions[0]][entity.position[1]].raised == collisionAgainst)
+			entity.directions[0] *= -1;
+		if(board[entity.position[0]][entity.position[1] + 2 * entity.directions[1]].raised == collisionAgainst)
+			entity.directions[1] *= -1;
 	}
 };
 

@@ -1,6 +1,11 @@
 #ifndef ENTITY_CPP
 #define ENTITY_CPP
 
+#include <iostream>
+#include <string>
+
+using namespace std;
+
 #define REGULAR_ENEMY	'R'
 #define FILLED_ENEMY	'F'
 #define PLAYER			'P'
@@ -43,9 +48,31 @@ public:
 		this->directions[1] = directions[1];
 	}
 
-	void move(){
-		this->position[0] += this->directions[0];
-		this->position[1] += this->directions[1];
+	void move(int limit){
+		int newX = this->position[0] + this->directions[0];
+		int newZ = this->position[1] + this->directions[1];
+
+		if(newX >= limit || newX < 0 || newZ >= limit || newZ < 0) return;
+
+		this->position[0] = newX;
+		this->position[1] = newZ;
+	}
+
+	std::string toString(){
+		std::string entity = "";
+
+		entity.push_back(type);
+		entity.push_back(' ');
+
+		entity +=	"(" + std::to_string((long long)position[0]) + "," + 
+					std::to_string((long long)position[1]) + ") ";
+		entity +=	"(" + std::to_string((long long)color[0]) + "," + 
+					std::to_string((long long)color[1]) + "," + 
+					std::to_string((long long)color[2]) + ") ";
+		entity +=	"(" + std::to_string((long long)directions[0]) + "," + 
+					std::to_string((long long)directions[1]) + ")";
+
+		return entity;
 	}
 };
 
@@ -67,18 +94,34 @@ public:
 		this->power = power;
 	}
 
+	std::string toString(){
+		std::string enemy = Entity::toString();
+
+		enemy += " " + std::to_string((long long)power);
+
+		return enemy;
+	}
+
 };
 
 class Player: public Entity {
 public:
 	int lives;
+	bool filling;
 
 	Player() {};
 	Player(int position[2]): Entity(PLAYER, position){
 		this->lives = 3;
+		this->filling = false;
 	}
-	Player(int position[2], int directions[2]): Entity(PLAYER, position, directions){
-		this->lives = 3;
+
+	std::string toString(){
+		std::string player = Entity::toString();
+
+		player += " " + std::to_string((long long)lives);
+		player += filling? " true" : " false";
+
+		return player;
 	}
 };
 

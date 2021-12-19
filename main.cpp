@@ -7,7 +7,7 @@ int gameState = PLAYING;
 double sceneRotateX = 30;
 double sceneRotateY = 0;
 
-Field level;
+Field board;
 Player player;
 vector<Enemy> enemies;
 
@@ -29,7 +29,7 @@ void display(){
 
 	renderCoordinateSystem();
 
-	renderField(level);
+	renderField(board);
 
 	renderPlayer(player);
 
@@ -58,9 +58,9 @@ void arrows(int key, int x, int y){
 			sceneRotateY -= 5;
 			break;
 	}
-	if(sceneRotateX >= 360)	sceneRotateX -= 360;
+	if(sceneRotateX >= 360)		sceneRotateX -= 360;
 	if(sceneRotateX < 0)		sceneRotateX += 360;
-	if(sceneRotateY >= 360)	sceneRotateY -= 360;
+	if(sceneRotateY >= 360)		sceneRotateY -= 360;
 	if(sceneRotateY < 0)		sceneRotateY += 360;
 	glutPostRedisplay();
 }
@@ -70,36 +70,43 @@ void keyboard(unsigned char key, int x, int y) {
 	if(gameState != PLAYING) return;
 	switch(key){
 	case 'w':
-
+		player.directions[0] = 0;
+		player.directions[1] = -1;
 		break;
 	case 's':
-
+		player.directions[0] = 0;
+		player.directions[1] = 1;
 		break;
 	case 'a':
-		
+		player.directions[0] = -1;
+		player.directions[1] = 0;
 		break;
 	case 'd':
-		
+		player.directions[0] = 1;
+		player.directions[1] = 0;
 		break;
 	}
+	board.move(player);
 	glutPostRedisplay();
 }
 
 void timer(int x){
+	for(int i = 0; i < enemies.size(); i++)
+		board.move(enemies[i]);
+	glutTimerFunc(1, timer, 0);
 	glutPostRedisplay();
 }
 
 int main(int argc, char* argv[]) {
 
-	level = Field(1);
+	board = Field(1);
 
 	int position[2] = {0, 0};
 	player = Player(position);
 
-	enemies = level.enemies;
+	cout << position << endl;
 
-	for(int i = 0; i < enemies.size(); i++)
-		cout << enemies[i].position[0] << " "  << enemies[i].position[1] << endl;
+	enemies = board.enemies;
 
 	//GLUT initialization
 	glutInit(&argc, argv);
