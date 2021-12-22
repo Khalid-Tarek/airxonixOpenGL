@@ -110,8 +110,8 @@ void keylevel(unsigned char key, int x, int y) {
 }
 
 void timer(int x){
-	checkGameState();
 	if(gameState != PLAYING) return;
+	checkGameState();
 
 	if(player.isFilling)
 		level.move(player);
@@ -124,7 +124,7 @@ void timer(int x){
 }
 
 int main(int argc, char* argv[]) {
-
+	
 	int position[2] = {0, 0};
 	player = Player(position);
 

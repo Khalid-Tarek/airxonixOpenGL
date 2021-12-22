@@ -5,7 +5,7 @@ void addLighting(){
 	glRotated(180, 0, 1, 0);
 	GLfloat lightColor[] = {0.3, 0.3, 0.3, 1};
 
-	GLfloat lightPosition0[] = {0, 2, 0, 1};
+	GLfloat lightPosition0[] = {0, 5, 6, 1};
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition0);
 	glPopMatrix();
@@ -40,9 +40,9 @@ void renderCoordinateSystem(){
  */
 void renderCell(Field::Cell cell, double raisedColor[3]) {
 	//Get the 3D coordinate of the center of the block
-	double x = cell.z * CELL_SIZE;
+	double x = cell.x * CELL_SIZE;
 	double y = 0;
-	double z = cell.x * CELL_SIZE;
+	double z = cell.z * CELL_SIZE;
 	
 	double hL = CELL_SIZE / 2;									//half Length
 	double h = (cell.raised * CELL_SIZE * 3) + CELL_SIZE;		//Height

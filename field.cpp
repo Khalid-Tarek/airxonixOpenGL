@@ -51,7 +51,7 @@ public:
 		for(int i = 0; i < dimension; i++){
 			vector<Cell> row;
 			for(int j = 0; j < dimension; j++){
-				Cell cell(j, i, 0.0);
+				Cell cell(i, j, 0.0);
 				if(i == 0 || j == 0 || i == dimension - 1 || j == dimension - 1)
 					cell.raised = 1;
 				row.push_back(cell);
@@ -105,6 +105,7 @@ public:
 
 		entity.move(dimension);
 		board[entity.position[0]][entity.position[1]].cellFlag = entity.type;
+		checkIfFilling(*player);
 	}
 
 	void checkIfFilling(Player &player){
@@ -137,44 +138,44 @@ private:
 			playerDrawnLine[i]->raised = 1;
 			playerDrawnLine[i]->cellFlag = NO_ENTITY;
 		}
-		//actuateFilling(playerDrawnLine[0].x, playerDrawnLine[0].z);
+		actuateFilling(playerDrawnLine[0]->x, playerDrawnLine[0]->z);
 	}
 
-	void actuateFilling(int x, int y){
-		if(x > 0)				fill(x - 1, y, isEmpty(x - 1, y));
-		if(x < dimension - 1)	fill(x + 1, y, isEmpty(x + 1, y));
-		if(y > 0)				fill(x, y - 1, isEmpty(x, y - 1));
-		if(y < dimension - 1)	fill(x, y + 1, isEmpty(x, y + 1));
+	void actuateFilling(int x, int z){
+		if(x > 0)				fill(x - 1, z, isEmpty(x - 1, z));
+		if(x < dimension - 1)	fill(x + 1, z, isEmpty(x + 1, z));
+		if(z > 0)				fill(x, z - 1, isEmpty(x, z - 1));
+		if(z < dimension - 1)	fill(x, z + 1, isEmpty(x, z + 1));
 	}
 
-	bool isEmpty(int x, int y){
-		if(board[x][y].cellFlag == CHECKED)			return true;
-		if(board[x][y].raised == 1)					return true;
-		if(board[x][y].cellFlag == REGULAR_ENEMY)	{
-			removeChecked(x, y);
+	bool isEmpty(int x, int z){
+			if(board[x][z].cellFlag == CHECKED)			return true;
+		if(board[x][z].raised == 1)					return true;
+		if(board[x][z].cellFlag == REGULAR_ENEMY)	{
+			removeChecked(x, z);
 			return false;
 		}
-		board[x][y].cellFlag = CHECKED;
-		return isEmpty(x - 1, y) && isEmpty(x + 1, y) && isEmpty(x, y - 1) && isEmpty(x, y + 1);
+		board[x][z].cellFlag = CHECKED;
+		return isEmpty(x - 1, z) && isEmpty(x + 1, z) && isEmpty(x, z - 1) && isEmpty(x, z + 1);
 	}
 
-	void removeChecked(int x, int y){
-		if(board[x][y].cellFlag != CHECKED) return;
-		board[x][y].cellFlag = NO_ENTITY;
-		removeChecked(x - 1, y);
-		removeChecked(x + 1, y);
-		removeChecked(x, y - 1);
-		removeChecked(x, y + 1);
+	void removeChecked(int x, int z){
+		if(board[x][z].cellFlag != CHECKED) return;
+		board[x][z].cellFlag = NO_ENTITY;
+		removeChecked(x - 1, z);
+		removeChecked(x + 1, z);
+		removeChecked(x, z - 1);
+		removeChecked(x, z + 1);
 	}
 
-	void fill(int x, int y, bool isEmptyFlag){
-		if(board[x][y].cellFlag != CHECKED) return;
-		if(isEmptyFlag) board[x][y].raised = 1;
-		board[x][y].cellFlag = NO_ENTITY;
-		fill(x - 1, y, isEmptyFlag);
-		fill(x + 1, y, isEmptyFlag);
-		fill(x, y - 1, isEmptyFlag);
-		fill(x, y + 1, isEmptyFlag);
+	void fill(int x, int z, bool isEmptyFlag){
+		if(board[x][z].cellFlag != CHECKED) return;
+		if(isEmptyFlag) board[x][z].raised = 1;
+		board[x][z].cellFlag = NO_ENTITY;
+		fill(x - 1, z, isEmptyFlag);
+		fill(x + 1, z, isEmptyFlag);
+		fill(x, z - 1, isEmptyFlag);
+		fill(x, z + 1, isEmptyFlag);
 	}
 
 	void collisionHandler(Entity &entity){
