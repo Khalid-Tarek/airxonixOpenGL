@@ -5,7 +5,7 @@ void addLighting(){
 	glRotated(180, 0, 1, 0);
 	GLfloat lightColor[] = {0.3, 0.3, 0.3, 1};
 
-	GLfloat lightPosition0[] = {0, 5, 6, 1};
+	GLfloat lightPosition0[] = {6, 5, 0, 1};
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition0);
 	glPopMatrix();
@@ -101,7 +101,7 @@ void renderCell(Field::Cell cell, double raisedColor[3]) {
 void renderField(Field field){
 	for(int i = 0; i < field.dimension; i++)
 		for(int j = 0; j < field.dimension; j++)
-			renderCell(field.board[i][j], field.raisedColors);
+			renderCell(*field.board[i][j], field.raisedColors);
 }
 
 void renderPlayer(Player player){

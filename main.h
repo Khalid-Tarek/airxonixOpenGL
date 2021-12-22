@@ -5,6 +5,7 @@
 #define WINDOW_HEIGHT		1024
 #define FOV					60
 #define BACKGROUND_COLOR	0, 0.3, 0.3, 1
+#define FPS					75
 
 //Game States
 #define PLAYING				10

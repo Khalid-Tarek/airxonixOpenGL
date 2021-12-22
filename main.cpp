@@ -117,9 +117,9 @@ void timer(int x){
 		level.move(player);
 
 	for(int i = 0; i < enemies.size(); i++)
-		level.move(enemies[i]);
+			level.move(enemies[i]);
 
-	glutTimerFunc(1, timer, 0);
+	glutTimerFunc(1000.0/FPS, timer, 0);
 	glutPostRedisplay();
 }
 
@@ -147,7 +147,7 @@ int main(int argc, char* argv[]) {
 	glutReshapeFunc(lockResizing);
 	glutSpecialFunc(arrows);
 	glutKeyboardFunc(keylevel);
-	glutTimerFunc(1, timer, 0);
+	glutTimerFunc(1000.0/FPS, timer, 0);
 
 	//Perspective Projection Setup
 	glClearColor(BACKGROUND_COLOR);
