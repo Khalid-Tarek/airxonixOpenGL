@@ -58,8 +58,8 @@ public:
 		this->position[1] = newZ;
 	}
 
-	std::string toString(){
-		std::string entity = "";
+	string toString(){
+		string entity = "";
 
 		entity.push_back(type);
 		entity.push_back(' ');
@@ -94,8 +94,8 @@ public:
 		this->power = power;
 	}
 
-	std::string toString(){
-		std::string enemy = Entity::toString();
+	string toString(){
+		string enemy = Entity::toString();
 
 		enemy += " " + std::to_string((long long)power);
 
@@ -107,19 +107,26 @@ public:
 class Player: public Entity {
 public:
 	int lives;
-	bool filling;
+	bool isFilling;
 
 	Player() {};
 	Player(int position[2]): Entity(PLAYER, position){
 		this->lives = 3;
-		this->filling = false;
+		this->isFilling = false;
 	}
 
-	std::string toString(){
-		std::string player = Entity::toString();
+	void getHit(){
+		lives--;
+		position[0] = 0;
+		position[1] = 0;
+		isFilling = false;
+	}
+
+	string toString(){
+		string player = Entity::toString();
 
 		player += " " + std::to_string((long long)lives);
-		player += filling? " true" : " false";
+		player += isFilling? " true" : " false";
 
 		return player;
 	}

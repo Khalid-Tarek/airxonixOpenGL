@@ -40,13 +40,15 @@ void renderCoordinateSystem(){
  */
 void renderCell(Field::Cell cell, double raisedColor[3]) {
 	//Get the 3D coordinate of the center of the block
-	double x = cell.x * CELL_SIZE;
+	double x = cell.z * CELL_SIZE;
 	double y = 0;
-	double z = cell.z * CELL_SIZE;
+	double z = cell.x * CELL_SIZE;
 	
 	double hL = CELL_SIZE / 2;									//half Length
 	double h = (cell.raised * CELL_SIZE * 3) + CELL_SIZE;		//Height
 	double hB = CELL_SIZE / 2;									//half Breadth
+
+	if(cell.cellFlag == QUEUED) h = CELL_SIZE * 4; 
 
 	//Create an array of all the faces, each face represented by 4 points, and each point having 3 coordinates xyz
 	//All faces go from top left -> top right -> bottom right -> bottom left (To make the front of the face on the outside of the cuboid)
@@ -63,6 +65,13 @@ void renderCell(Field::Cell cell, double raisedColor[3]) {
 	color[0] = 1 - (cell.raised * (1 - raisedColor[0]));
 	color[1] = 1 - (cell.raised * (1 - raisedColor[1]));
 	color[2] = 1 - (cell.raised * (1 - raisedColor[2]));
+
+	//If it is queued, draw it yellow
+	if(cell.cellFlag == QUEUED){
+		color[0] = 1;
+		color[1] = 1;
+		color[2] = 0;
+	}
 
 	//render the cuboid
 	glColor3dv(color);				//Set the current rendering color to the block's color

@@ -7,14 +7,30 @@ int gameState = PLAYING;
 double sceneRotateX = 30;
 double sceneRotateY = 0;
 
-Field board;
+Field level;
 Player player;
 vector<Enemy> enemies;
 
 //Periodically Checks for change in the gameState variable
 void checkGameState(){
 	if(gameState != PLAYING) return;
-	
+
+	if(player.lives < 0){
+		gameState = LOST;
+		player.color[0] = 0;
+		player.color[1] = 0;
+		player.color[2] = 0;
+		//TODO: "You Lost!" Pop up
+	}
+		
+	if(level.currentlyFilled >= level.winCondition){
+		gameState = WON;
+		player.color[0] = 0;
+		player.color[1] = 1;
+		player.color[2] = 0;
+		//TODO: "You Won!" Pop up
+	}
+		
 }
 
 void display(){
@@ -29,7 +45,7 @@ void display(){
 
 	renderCoordinateSystem();
 
-	renderField(board);
+	renderField(level);
 
 	renderPlayer(player);
 
@@ -65,7 +81,7 @@ void arrows(int key, int x, int y){
 	glutPostRedisplay();
 }
 
-void keyboard(unsigned char key, int x, int y) {
+void keylevel(unsigned char key, int x, int y) {
 	if(key == 27) exit(0);
 	if(gameState != PLAYING) return;
 	switch(key){
@@ -86,27 +102,35 @@ void keyboard(unsigned char key, int x, int y) {
 		player.directions[1] = 0;
 		break;
 	}
-	board.move(player);
+	
+	if(!player.isFilling)
+		level.move(player);
+		
 	glutPostRedisplay();
 }
 
 void timer(int x){
+	checkGameState();
+	if(gameState != PLAYING) return;
+
+	if(player.isFilling)
+		level.move(player);
+
 	for(int i = 0; i < enemies.size(); i++)
-		board.move(enemies[i]);
+		level.move(enemies[i]);
+
 	glutTimerFunc(1, timer, 0);
 	glutPostRedisplay();
 }
 
 int main(int argc, char* argv[]) {
 
-	board = Field(1);
-
 	int position[2] = {0, 0};
 	player = Player(position);
 
-	cout << position << endl;
+	level = Field(player, 1);
 
-	enemies = board.enemies;
+	enemies = level.enemies;
 
 	//GLUT initialization
 	glutInit(&argc, argv);
@@ -122,7 +146,7 @@ int main(int argc, char* argv[]) {
 	glutDisplayFunc(display);
 	glutReshapeFunc(lockResizing);
 	glutSpecialFunc(arrows);
-	glutKeyboardFunc(keyboard);
+	glutKeyboardFunc(keylevel);
 	glutTimerFunc(1, timer, 0);
 
 	//Perspective Projection Setup

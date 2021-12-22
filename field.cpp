@@ -8,6 +8,7 @@
 
 #define NO_ENTITY	'N'
 #define CHECKED		'C'
+#define QUEUED		'Q'
 
 class Field{
 public:
@@ -34,10 +35,14 @@ public:
 	double winCondition;		// 0 to 1
 	int timeLeft;				// in seconds
 	vector<Enemy> enemies;
+	vector<Cell*> playerDrawnLine;
+	Player *player;
 	
 	Field() {};
-	Field(int level){
+	Field(Player &p, int level){
 		
+		player = &p;
+
 		string filename = "levels/" + to_string((long double)level) + ".txt";
 		freopen(filename.c_str(), "r", stdin);
 
@@ -85,18 +90,34 @@ public:
 		}
 	}
 
-	void actuateFilling(int x, int y){
-		if(x > 0)				fill(x - 1, y, isEmpty(x - 1, y));
-		if(x < dimension - 1)	fill(x + 1, y, isEmpty(x + 1, y));
-		if(y > 0)				fill(x, y - 1, isEmpty(x, y - 1));
-		if(y < dimension - 1)	fill(x, y + 1, isEmpty(x, y + 1));
+	void move(Entity &entity){
+		if(entity.type != PLAYER) 
+			collisionHandler(entity);
+		else
+			checkIfFilling(*player);
+
+		if(entity.type == PLAYER && player->isFilling){
+			board[entity.position[0]][entity.position[1]].cellFlag = QUEUED;
+			playerDrawnLine.push_back(&board[player->position[0]][player->position[1]]);
+		}
+		else
+			board[entity.position[0]][entity.position[1]].cellFlag = NO_ENTITY;
+
+		entity.move(dimension);
+		board[entity.position[0]][entity.position[1]].cellFlag = entity.type;
 	}
 
-	void move(Entity &entity){
-		if(entity.type != PLAYER) collisionHandler(entity);
-		board[entity.position[0]][entity.position[1]].cellFlag = NO_ENTITY;
-		entity.move(dimension);
-		board[entity.position[0]][entity.position[1]].cellFlag = NO_ENTITY;
+	void checkIfFilling(Player &player){
+		if(player.isFilling	== false && board[player.position[0]][player.position[1]].raised == 0){
+			player.isFilling = true;
+		}
+		else if(player.isFilling == true && board[player.position[0]][player.position[1]].raised == 1){
+			player.isFilling = false;
+			fillPlayerDrawnLine();
+			playerDrawnLine.clear();
+			updateCurrentlyFilled();
+		}
+		
 	}
 
 private:
@@ -109,6 +130,21 @@ private:
 				if(board[j][i].raised) filledCells++;
 
 		currentlyFilled = filledCells / totalNumOfCells;
+	}
+
+	void fillPlayerDrawnLine(){
+		for(int i = 0; i < playerDrawnLine.size(); i++){
+			playerDrawnLine[i]->raised = 1;
+			playerDrawnLine[i]->cellFlag = NO_ENTITY;
+		}
+		//actuateFilling(playerDrawnLine[0].x, playerDrawnLine[0].z);
+	}
+
+	void actuateFilling(int x, int y){
+		if(x > 0)				fill(x - 1, y, isEmpty(x - 1, y));
+		if(x < dimension - 1)	fill(x + 1, y, isEmpty(x + 1, y));
+		if(y > 0)				fill(x, y - 1, isEmpty(x, y - 1));
+		if(y < dimension - 1)	fill(x, y + 1, isEmpty(x, y + 1));
 	}
 
 	bool isEmpty(int x, int y){
@@ -142,6 +178,23 @@ private:
 	}
 
 	void collisionHandler(Entity &entity){
+		//Check if a regular enemy hits a queued cell, and if it does, clear the queued cells and hit the player
+		if(entity.type == REGULAR_ENEMY){
+			if(board[entity.position[0] + 2 * entity.directions[0]][entity.position[1]].cellFlag == QUEUED){
+				entity.directions[0] *= -1;
+				player->getHit();
+				for(int i = 0; i < playerDrawnLine.size(); i++)
+					playerDrawnLine[i]->cellFlag = NO_ENTITY;
+				playerDrawnLine.clear();
+			}
+			if(board[entity.position[0]][entity.position[1] + 2 * entity.directions[1]].cellFlag == QUEUED){
+				entity.directions[1] *= -1;
+				player->getHit();
+				for(int i = 0; i < playerDrawnLine.size(); i++)
+					playerDrawnLine[i]->cellFlag = NO_ENTITY;
+				playerDrawnLine.clear();
+			}
+		}
 		//If the type of entity is regular, then it will collide against filled, if its filled, it will collide against empty
 		int collisionAgainst = (entity.type == REGULAR_ENEMY? 1 : 0);
 		if(board[entity.position[0] + 2 * entity.directions[0]][entity.position[1]].raised == collisionAgainst)
