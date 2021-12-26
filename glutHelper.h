@@ -9,13 +9,16 @@
 #include <GL\glut.h>
 #endif
 
-#define CELL_SIZE 0.1
+#define Z_DISTANCE	20	//Distance of which the GUI should be away from the origin
+
+#define CELL_SIZE	0.1	//The dimension of a single cell on the board
+
+void renderChar(double x, double y, char c);
+
+void renderGUI(int lives, double percentageFilled, double goalFilled, int timeLeft);
 
 void addLighting();
 
-/**
- *	Renders 3 simple lines signifying the 3 positive axis. Only used for debugging purposes
- */
 void renderCoordinateSystem();
 
 void renderCell(Field::Cell cell, double color[3]);

@@ -7,6 +7,8 @@
 #define BACKGROUND_COLOR	0, 0.3, 0.3, 1
 #define FPS					75
 
+#define SLOW_RATE			3
+
 //Game States
 #define PLAYING				10
 #define WON					20
@@ -15,7 +17,6 @@
 //The steps of animating
 #define ANIMATION_STEP		5
 
-//Periodically Checks for change in the gameState variable
 void checkGameState();
 
 void display();

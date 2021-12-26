@@ -1,11 +1,51 @@
 #include "glutHelper.h"
 
+//Draws one character at the passed in coordinates. (the screen usually spans from 0 to Z_DISTANCE in both directions). Origin is top left
+void renderChar(double x, double y, char c){
+
+	//Shift input, since it actually goes from -Z_DISTANCE / 2 to Z_DISTANCE / 2
+	x -= Z_DISTANCE / 2 + 1;
+	y += Z_DISTANCE / 2;
+
+	glPushMatrix();
+	glTranslated(x, y, 0);
+	glScaled(0.01, 0.01, 0.01);
+	glutStrokeCharacter(GLUT_STROKE_MONO_ROMAN, c);
+	glPopMatrix();
+
+}
+
+void renderGUI(int lives, double percentageFilled, double goalFilled, int timeLeft){
+	glPushMatrix();
+
+	glTranslated(0, 0, -20.0);		//Move infront of the origin (-Z) to simulate a screen
+
+	//Draw lives at top left
+	renderChar(0,   0, (lives >= 0 ? lives + '0' : '-'));
+
+	//Draw percentageFilled/goalFilled at top center
+	percentageFilled *= 100;
+	goalFilled *= 100;
+
+	renderChar(8,   0, ((int)percentageFilled / 10) + '0');
+	renderChar(9,   0, ((int)percentageFilled % 10) + '0');
+	renderChar(10,  0, '/');
+	renderChar(11,  0, ((int)goalFilled / 10) + '0');
+	renderChar(12,  0, ((int)goalFilled % 10) + '0');
+
+	//Draw timeLeft at top right
+	renderChar(20, 0, ((int)timeLeft / 10) + '0');
+	renderChar(21, 0, ((int)timeLeft % 10) + '0');
+
+	glPopMatrix();
+}
+
 void addLighting(){
 	glPushMatrix();
 	glRotated(180, 0, 1, 0);
 	GLfloat lightColor[] = {0.3, 0.3, 0.3, 1};
 
-	GLfloat lightPosition0[] = {6, 5, 0, 1};
+	GLfloat lightPosition0[] = {0, 5, 0, 1};
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition0);
 	glPopMatrix();
