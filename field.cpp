@@ -2,14 +2,16 @@
 #define FIELD_CPP
 
 #include <vector>
-#include <math.h>
-
 #include "entity.cpp"
 
+//Types of cell flags relating to fill checking
 #define NO_ENTITY	'N'
 #define CHECKED		'C'
 #define QUEUED		'Q'
 
+/**
+ *	
+ */
 class Field{
 public:
 	class Cell {

@@ -14,7 +14,7 @@
 				you or your line before you enclose an area, you'll get hit. Get hit enough times, and
 				you lose the game!
 
-  Developers:	Khalid Tarek Tawfiek
+  Developers:	Khalid Tarek
 				Abdallah Kareem
 				Mona Mohammed Saeed
 				Ahmed Mohammed El-Sayed Moustafa
@@ -75,13 +75,13 @@ void display(){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
+	addLighting();
+
 	renderGUI(player.lives, level.currentlyFilled, level.winCondition, level.timeLeft);
 
 	glTranslated(-5, 0, -20);
 	glRotated(sceneRotateX, 1, 0, 0);
 	glRotated(sceneRotateY, 0, 1, 0);
-
-	addLighting();
 
 	//renderCoordinateSystem();
 
@@ -218,7 +218,6 @@ int main(int argc, char* argv[]) {
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_LIGHTING);			//Enables Lighting: Use current lighting parameters to compute color
 	glEnable(GL_LIGHT0);			//Enables Light0
-	glEnable(GL_LIGHT1);			//Enables Light1
 	glEnable(GL_NORMALIZE);			//Normalizes color vectors to a unit length before lighting
 	glShadeModel(GL_SMOOTH);
 

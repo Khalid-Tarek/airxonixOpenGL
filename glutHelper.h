@@ -13,11 +13,11 @@
 
 #define CELL_SIZE	0.1	//The dimension of a single cell on the board
 
-void renderChar(double x, double y, char c);
+void addLighting();
 
 void renderGUI(int lives, double percentageFilled, double goalFilled, int timeLeft);
 
-void addLighting();
+void renderChar(double x, double y, char c);
 
 void renderCoordinateSystem();
 

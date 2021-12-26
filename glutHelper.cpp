@@ -1,24 +1,28 @@
 #include "glutHelper.h"
 
-//Draws one character at the passed in coordinates. (the screen usually spans from 0 to Z_DISTANCE in both directions). Origin is top left
-void renderChar(double x, double y, char c){
-
-	//Shift input, since it actually goes from -Z_DISTANCE / 2 to Z_DISTANCE / 2
-	x -= Z_DISTANCE / 2 + 1;
-	y += Z_DISTANCE / 2;
-
+/**
+ *  Adds some lighting to the scene.
+ *	This method is called before the matrix is shifted in front of the perspective so the origin is at the camera
+ *	Still needs some tweaking
+ */
+void addLighting(){
 	glPushMatrix();
-	glTranslated(x, y, 0);
-	glScaled(0.01, 0.01, 0.01);
-	glutStrokeCharacter(GLUT_STROKE_MONO_ROMAN, c);
-	glPopMatrix();
+	GLfloat lightColor[] = {0.3, 0.3, 0.3, 1};
 
+	GLfloat lightPosition0[] = {-5, 2, -10, 1};
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);
+	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition0);
+	glPopMatrix();
 }
 
+/**
+ *	Renders the GUI of the game.
+ *  This method is called before the matrix is shifted in front of the perspective so, we shift it by Z_DISTANCE
+ */
 void renderGUI(int lives, double percentageFilled, double goalFilled, int timeLeft){
 	glPushMatrix();
 
-	glTranslated(0, 0, -20.0);		//Move infront of the origin (-Z) to simulate a screen
+	glTranslated(0, 0, -Z_DISTANCE);		//Move infront of the origin (-Z) to simulate a screen
 
 	//Draw lives at top left
 	renderChar(0,   0, (lives >= 0 ? lives + '0' : '-'));
@@ -40,15 +44,19 @@ void renderGUI(int lives, double percentageFilled, double goalFilled, int timeLe
 	glPopMatrix();
 }
 
-void addLighting(){
-	glPushMatrix();
-	glRotated(180, 0, 1, 0);
-	GLfloat lightColor[] = {0.3, 0.3, 0.3, 1};
+//Draws one character at the passed in coordinates. (the screen usually spans from 0 to Z_DISTANCE in both directions). Origin is top left
+void renderChar(double x, double y, char c){
 
-	GLfloat lightPosition0[] = {0, 5, 0, 1};
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);
-	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition0);
+	//Shift input, since it actually goes from -Z_DISTANCE / 2 to Z_DISTANCE / 2
+	x -= Z_DISTANCE / 2 + 1;
+	y += Z_DISTANCE / 2;
+
+	glPushMatrix();
+	glTranslated(x, y, 0);
+	glScaled(0.01, 0.01, 0.01);
+	glutStrokeCharacter(GLUT_STROKE_MONO_ROMAN, c);
 	glPopMatrix();
+
 }
 
 /**
@@ -138,12 +146,14 @@ void renderCell(Field::Cell cell, double raisedColor[3]) {
 	*/
 }
 
+//Renders the field one cell at a time
 void renderField(Field field){
 	for(int i = 0; i < field.dimension; i++)
 		for(int j = 0; j < field.dimension; j++)
 			renderCell(*field.board[i][j], field.raisedColors);
 }
 
+//Renders the player as a sphere at the player's position
 void renderPlayer(Player player){
 	glPushMatrix();
 
@@ -154,6 +164,7 @@ void renderPlayer(Player player){
 	glPopMatrix();
 }
 
+//Renders the enemies as cubes at their respective positions
 void renderEnemies(vector<Enemy> enemies){
 	for(int i = 0; i < enemies.size(); i++){
 		glPushMatrix();
