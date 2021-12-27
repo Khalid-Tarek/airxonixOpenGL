@@ -5,7 +5,7 @@
 							  / ___ \| | |  /  \ (_) | | | | |>  < 
 							 /_/   \_\_|_| /_/\_\___/|_| |_|_/_/\_\
 
-  Description:	This game was made by The Rad Squad for 3D Graphics Course - EELU (Fall 2021-22)
+  Description:	This game was made by The Rad Squad (A) for 3D Graphics Course - EELU (Fall 2021-22)
 
 				In this 3D game, you take control of a spherical ball on a 2D board. Your goal is to fill
 				a percentage of the board by enclosing parts of it with your drawing line.
@@ -15,10 +15,8 @@
 				you lose the game!
 
   Developers:	Khalid Tarek
-				Abdallah Kareem
 				Mona Mohammed Saeed
 				Ahmed Mohammed El-Sayed Moustafa
-				Osama Sakr
 
   Project
   Structure:	main.cpp		& main.h	--------------> Program Entry Point + main logic
@@ -27,13 +25,12 @@
 				field.cpp --------------------------------> Field class + Cell inner class
 				entity.cpp -------------------------------> Entity class + Player & Enemy Subclasses
 
-  Rights:		All rights go back to the original designer(s) of the games
+  Rights:		All rights go back to the original designer(s) of the game(s)
 						Xonix (1984):		Ilan Rav Dani Katz
 						AirXonix (2000):	AXYSOFT
 
-				This is a simple reimplementation of the original games, hope you enjoy it!
+				This is a simple reimplementation of the original game(s), hope you enjoy it!
 *********************************************************************************************************/
-
 #include "main.h"
 
 //Current Game State
