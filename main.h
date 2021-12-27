@@ -7,8 +7,7 @@
 #define BACKGROUND_COLOR	0, 0.3, 0.3, 1
 #define FPS					75
 
-//Slow the game calculations by this rate
-#define SLOW_RATE			3
+#define ENEMY_SLOW_RATE		4	//Lower is slower (Range: 2 - infinity) (1: 100% slow, 2: 50% slow, 3: 33% slow, 4: 25% slow, and so on)
 
 //Game States
 #define PLAYING				10

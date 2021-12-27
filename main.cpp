@@ -162,8 +162,10 @@ void timer(int x){
 	if(player.isFilling)
 		level.move(player);
 
-	//Handles enemy movement
-	for(int i = 0; i < enemies.size(); i++)
+	//Skip every ENEMY_SLOW_RATE'th calculation (slows the enemy movement by (100/ENEMY_SLOW_RATE)%)
+	if(!(x % ENEMY_SLOW_RATE == 0))
+		//Handles enemy movement.
+		for(int i = 0; i < enemies.size(); i++)
 			level.move(enemies[i]);
 
 	//Remove a second every 60 times this method is called
@@ -172,7 +174,7 @@ void timer(int x){
 		level.timeLeft -= 1;
 	}
 
-	glutTimerFunc((1000.0/FPS)/SLOW_RATE, timer, x + 1);
+	glutTimerFunc(1000.0/FPS, timer, x + 1);
 	glutPostRedisplay();	//Notify the display function to fire again
 }
 
@@ -202,7 +204,7 @@ int main(int argc, char* argv[]) {
 	glutReshapeFunc(lockResizing);
 	glutSpecialFunc(arrows);
 	glutKeyboardFunc(keyboard);
-	glutTimerFunc((1000.0/FPS)/SLOW_RATE, timer, 0);
+	glutTimerFunc(1000.0/FPS, timer, 0);
 
 	//Perspective Projection Setup
 	glClearColor(BACKGROUND_COLOR);

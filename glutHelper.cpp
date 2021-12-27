@@ -168,9 +168,15 @@ void renderPlayer(Player player){
 void renderEnemies(vector<Enemy> enemies){
 	for(int i = 0; i < enemies.size(); i++){
 		glPushMatrix();
+
 		glTranslated(enemies[i].position[0] / 10.0, CELL_SIZE * 5, enemies[i].position[1] / 10.0);
+		if(enemies[i].type == FILLED_ENEMY) //Raise the filled enemy a little bit higher than regular enemies
+			glTranslated(0, CELL_SIZE * 2.5, 0);
+
 		glColor3dv(enemies[i].color);
+
 		glutSolidCube(CELL_SIZE * 4);
+
 		glPopMatrix();
 	}
 }
